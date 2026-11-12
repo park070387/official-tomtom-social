@@ -1,19 +1,85 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Official TomTom Social</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-body{font-family:Arial;text-align:center;background:#fafafa;margin:0;padding:40px 15px}
-h1{color:#d62976}
-button{background:#d62976;color:white;border:0;padding:15px 30px;border-radius:25px}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f5f5;font-family:Arial,sans-serif;color:#222}
+header{background:#d62976;color:white;padding:20px;text-align:center}
+header h2{margin:0}
+main{max-width:500px;margin:auto;padding:18px}
+.welcome,.post,.profile{background:white;padding:18px;border-radius:14px;margin-bottom:16px}
+h3{margin-top:0}
+button{background:#d62976;color:white;border:0;padding:12px 20px;border-radius:25px;font-size:15px}
+input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
+.post p{line-height:1.5}
+nav{position:fixed;bottom:0;left:0;right:0;background:white;padding:15px;text-align:center;border-top:1px solid #ddd}
+nav span{margin:0 12px;font-size:14px}
+footer{height:65px}
 </style>
 </head>
 <body>
-<h1>Official TomTom Social</h1>
-<p>Welcome! Connect, share photos and videos with friends.</p>
-<button onclick="alert('Welcome to TomTom Social!')">Get Started</button>
+<header>
+<h2>Official TomTom Social</h2>
+<p>Connect • Share • Enjoy</p>
+</header>
+
+<main>
+<section class="welcome">
+<h3>Welcome to TomTom Social! ❤️</h3>
+<p id="greeting">Connect with friends and share your moments.</p>
+<p>Join our growing community.</p>
+<button onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Get Started</button>
+</section>
+
+<section class="profile" id="signup">
+<h3>Create Your Profile</h3>
+<p>Complete your profile to get started.</p>
+<input id="fullname" placeholder="Your full name">
+<input id="username" placeholder="Choose a username">
+<button onclick="createProfile()">Continue</button>
+<p id="message"></p>
+</section>
+
+<section class="post">
+<h3>Community Feed</h3>
+<p>Welcome to Official TomTom Social! Your place to connect, share photos and videos, and meet people.</p>
+</section>
+</main>
+
+<footer></footer>
+<nav>
+<span>🏠 Home</span>
+<span>🔍 Explore</span>
+<span>➕ Create</span>
+<span>👤 Profile</span>
+</nav>
+
+<script>
+const tg = window.Telegram && window.Telegram.WebApp;
+if(tg){
+  tg.ready();
+  tg.expand();
+  const user = tg.initDataUnsafe?.user;
+  if(user){
+    document.getElementById("greeting").textContent =
+      "Welcome, " + (user.first_name || "friend") + "! Connect and share with the community.";
+  }
+}
+function createProfile(){
+  const name=document.getElementById("fullname").value.trim();
+  const username=document.getElementById("username").value.trim();
+  if(!name || !username){
+    document.getElementById("message").textContent="Please enter your name and username.";
+    return;
+  }
+  document.getElementById("message").textContent=
+    "Thank you, "+name+"! Your profile screen is ready for the next setup step.";
+}
+</script>
 </body>
 </html>
